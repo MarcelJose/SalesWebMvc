@@ -25,6 +25,16 @@ namespace SalesWebMvc.Controllers
             return View(await _context.Department.ToListAsync());
         }
 
+        public async Task<IActionResult> Sellers()
+        {
+            return View(await _context.Seller.ToListAsync());
+        }
+
+        public async Task<IActionResult> SalesRecord()
+        {
+            return View(await _context.SalesRecord.ToListAsync());
+        }
+
         // GET: Departments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
