@@ -14,6 +14,7 @@ builder.Services.AddDbContext<SalesWebMvcContext>(
     Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.33-mysql")));
 
 builder.Services.AddScoped<SellerService>();
+builder.Services.AddScoped<DepartmentService>();
 
 var app = builder.Build();
 

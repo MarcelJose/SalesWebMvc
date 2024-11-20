@@ -10,6 +10,10 @@ namespace SalesWebMvc.Models
         public SaleStatus Status { get; set; }
         public Seller Seller { get; set; }
 
+        public SalesRecord()
+        {
+        }
+
         public SalesRecord(int id, DateTime date, double amount, SaleStatus status, Seller seller)
         {
             Id = id;
@@ -17,10 +21,6 @@ namespace SalesWebMvc.Models
             Amount = amount;
             Status = status;
             Seller = seller;
-        }
-
-        public SalesRecord()
-        {
         }
     }
 }
