@@ -20,16 +20,13 @@
                 @Html.DisplayNameFor(Model => Model.Email)
             </th>
             <th>
-                @Html.DisplayNameFor(Model => Model.BirthDate)
-            </th>
-            <th>
                 @Html.DisplayNameFor(Model => Model.BaseSalary)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach(var item in Model)
+        @foreach (var item in Model)
         {
             <tr>
                 <td>
@@ -37,9 +34,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BirthDate)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.BaseSalary)

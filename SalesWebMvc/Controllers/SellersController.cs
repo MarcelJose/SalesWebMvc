@@ -40,7 +40,7 @@ namespace SalesWebMvc.Controllers
 
         public IActionResult Delete(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
