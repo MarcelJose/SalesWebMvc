@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SalesWebMvc.Data;
 using SalesWebMvc.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SalesWebMvc.Controllers
 {
@@ -19,7 +20,6 @@ namespace SalesWebMvc.Controllers
             _context = context;
         }
 
-        // GET: Departments
         public async Task<IActionResult> Index()
         {
             return View(await _context.Department.ToListAsync());
@@ -35,33 +35,23 @@ namespace SalesWebMvc.Controllers
             return View(await _context.SalesRecord.ToListAsync());
         }
 
-        // GET: Departments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id not provided" });
+
 
             var department = await _context.Department
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (department == null)
-            {
-                return NotFound();
-            }
+            if (department == null) return RedirectToAction(nameof(Error), new { message = "Id not found" });
 
             return View(department);
         }
 
-        // GET: Departments/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Departments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name")] Department department)
@@ -75,33 +65,20 @@ namespace SalesWebMvc.Controllers
             return View(department);
         }
 
-        // GET: Departments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id not provided" });
 
             var department = await _context.Department.FindAsync(id);
-            if (department == null)
-            {
-                return NotFound();
-            }
+            if (department == null) return RedirectToAction(nameof(Error), new { message = "Id not found" });
             return View(department);
         }
-
-        // POST: Departments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Department department)
         {
-            if (id != department.Id)
-            {
-                return NotFound();
-            }
+            if (id != department.Id) return RedirectToAction(nameof(Error), new { message = "Id mismatch" });
 
             if (ModelState.IsValid)
             {
@@ -110,41 +87,32 @@ namespace SalesWebMvc.Controllers
                     _context.Update(department);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException e)
                 {
-                    if (!DepartmentExists(department.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return RedirectToAction(nameof(Error), new { e.Message });
                 }
                 return RedirectToAction(nameof(Index));
             }
             return View(department);
         }
 
-        // GET: Departments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
             var department = await _context.Department
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (department == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
 
             return View(department);
         }
 
-        // POST: Departments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

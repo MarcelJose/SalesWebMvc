@@ -9,15 +9,7 @@
 <p align="right">
     <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
+<table class="table table-striped table-hover">
     <tbody>
         @foreach (var item in Model)
         {
