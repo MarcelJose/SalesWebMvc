@@ -41,8 +41,8 @@ namespace SalesWebMvc.Services
 
         public void Update(Seller seller)
         {
-            if (!_context.Seller.Any(x => x.Id == seller.Id))
-                _context.Update(seller);
+            if (!_context.Seller.Any(x => x.Id == seller.Id)) throw new NotFoundException("Id not found");
+            _context.Update(seller);
             _context.SaveChanges();
         }
     }
