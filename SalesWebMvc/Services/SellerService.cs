@@ -15,35 +15,42 @@ namespace SalesWebMvc.Services
             _context = context;
         }
 
-        public List<Seller> FindAll()
+        public async Task<List<Seller>> FindAllAsync()
         {
-            return _context.Seller.Include(obj => obj.Department).ToList();
+            return await _context.Seller.Include(obj => obj.Department).ToListAsync();
         }
 
-        public void Insert(Seller seller)
+        public async Task InsertAsync(Seller seller)
         {
             _context.Add(seller);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public Seller FidById(int id)
+        public async Task<Seller> FidByIdAsync(int id)
         {
-            var seller = _context.Seller.Include(obj => obj.Department).FirstOrDefault(obj => obj.Id == id);
-            return seller;
+            return await _context.Seller.Include(obj => obj.Department).FirstOrDefaultAsync(obj => obj.Id == id);
         }
 
-        public void Remove(int id)
+        public async Task Remove(int id)
         {
-            var seller = _context.Seller.Find(id);
+            var seller = await _context.Seller.FindAsync(id);
             _context.Seller.Remove(seller);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Update(Seller seller)
+        public async Task Update(Seller seller)
         {
-            if (!_context.Seller.Any(x => x.Id == seller.Id)) throw new NotFoundException("Id not found");
-            _context.Update(seller);
-            _context.SaveChanges();
+            bool hasAny = await _context.Seller.AnyAsync(x => x.Id == seller.Id);
+            if (!hasAny) throw new NotFoundException("Id not found");
+            try
+            {
+                _context.Update(seller);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                throw new DbUpdateConcurrencyException(e.Message);
+            }
         }
     }
 }
