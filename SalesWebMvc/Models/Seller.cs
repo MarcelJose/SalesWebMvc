@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.VisualBasic;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
@@ -18,6 +19,7 @@ namespace SalesWebMvc.Models
 
         [Required(ErrorMessage = "{0} required")]
         [Display(Name = "Birth Date")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
 
