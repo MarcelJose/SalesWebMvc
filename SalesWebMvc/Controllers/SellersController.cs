@@ -60,8 +60,15 @@ namespace SalesWebMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            await _sellerService.Remove(id);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _sellerService.RemoveAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (IntegretyException e)
+            {
+                return RedirectToAction(nameof(Error), new { message = "Cannot delete seller because he/she sales" });
+            }
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -96,7 +103,7 @@ namespace SalesWebMvc.Controllers
             if (id != seller.Id) return RedirectToAction(nameof(Error), new { message = "Id mismatch" });
             try
             {
-                await _sellerService.Update(seller);
+                await _sellerService.UpdateAsync(seller);
                 return RedirectToAction(nameof(Index));
             }
             catch (ApplicationException e)

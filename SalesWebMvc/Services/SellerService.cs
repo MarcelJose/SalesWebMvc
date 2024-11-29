@@ -28,17 +28,26 @@ namespace SalesWebMvc.Services
 
         public async Task<Seller> FidByIdAsync(int id)
         {
-            return await _context.Seller.Include(obj => obj.Department).FirstOrDefaultAsync(obj => obj.Id == id);
+            var seller = await _context.Seller.Include(obj => obj.Department).FirstOrDefaultAsync(obj => obj.Id == id);
+            if(seller == null) throw new NotFoundException("Id not found"); 
+            return seller;
         }
 
-        public async Task Remove(int id)
+        public async Task RemoveAsync(int id)
         {
-            var seller = await _context.Seller.FindAsync(id);
-            _context.Seller.Remove(seller);
-            await _context.SaveChangesAsync();
+            try
+            {
+                var seller = await _context.Seller.FindAsync(id);
+                _context.Seller.Remove(seller);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw new IntegretyException(e.Message);
+            }
         }
 
-        public async Task Update(Seller seller)
+        public async Task UpdateAsync(Seller seller)
         {
             bool hasAny = await _context.Seller.AnyAsync(x => x.Id == seller.Id);
             if (!hasAny) throw new NotFoundException("Id not found");
