@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "SimpleSearch";
+    DateTime minDate = DateTime.Parse(ViewData["minDate"] as string);
+    DateTime maxDate = DateTime.Parse(ViewData["maxDate"] as string);
 }
 
 <h2>Simple Search</h2>
@@ -47,4 +49,3 @@
         </table>
     </div>
 </div>
-
